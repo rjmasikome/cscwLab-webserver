@@ -64,7 +64,23 @@ app.post("/brick",function(req,res){
         res.send({message: successMessage});
         console.log(successMessage);
       }
-      else throw err;});
+      else res.send(err);});
+  }
+  else
+    throw err;
+  });
+    // console.log(currentAmount);
+});
+
+app.post("/login",function(req,res){
+    var username = req.body.username;
+    var password = req.body.password;
+    connection.query("SELECT * from user WHERE username = '"+ username +"'" + " AND password = '" + password + "'", function(err, rows, fields) {
+    // connection.end();
+  if (!err){
+    var send = { error: "User not found"};
+    if (rows[0]) send = rows[0];
+    res.send(send);
   }
   else
     throw err;

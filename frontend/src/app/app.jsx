@@ -11,8 +11,8 @@
   let NotFound = require('./components/notFound.jsx');
   let User= require('./components/user.jsx');
   let Admin= require('./components/maintainer.jsx');
+  let Login= require('./components/login.jsx');
 
-  let ga = require('react-ga');
 
   // Load Mock Product Data into localStorage
   // ProductData.init();
@@ -39,7 +39,8 @@
     <Route name="root" path="/" handler={Main}>
       <Route name="user" path="user" handler={User} />
       <Route name="admin" path="admin" handler={Admin} />
-      <Redirect from="/" to="user" />
+      <Route name="login" path="login" handler={Login} />
+      <Redirect from="/" to="login" />
       <NotFoundRoute handler={NotFound} />
     </Route>
   );
@@ -54,7 +55,6 @@
 //     </Route>
 //   );
 
-  ga.initialize('UA-66794626-1');
   Router.create({
       routes: AppRoutes,
       scrollBehavior: Router.ScrollToTopBehavior

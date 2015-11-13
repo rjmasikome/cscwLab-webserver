@@ -31,7 +31,7 @@ let TitleSearch = React.createClass({
   },
 
   render() {
-    // console.log(this.state.loginStatus);
+    if (!this.state.loginStatus.status) this.context.router.transitionTo('/login');
 
      var menuList = [      
       { route: 'logout', text: 'Logout'},
@@ -39,24 +39,18 @@ let TitleSearch = React.createClass({
 
     var loggedinNav = (<div></div>);
 
-    // var profile = (<DropDownIcon openDirection='bottom-left' onChange={this._onUserClick} className='logoutButton' menuItems={menuList} ><Avatar>io</Avatar></DropDownIcon>
-    //        );
+    var role = "undefined";
+    if (this.state.loginStatus.role) role = this.state.loginStatus.role;
 
-    // if (window.location.hash.indexOf('activate') > -1 ) profile = (<div></div>);
 
-    // // if(this.state.loginStatus) loggedinNav = (
-    // if (window.location.hash.indexOf('user') == -1 ) loggedinNav = (
-    //       <div className="grid headerGrid" >
-    //         <div className="col hidden-xs" style={{width: '15%'}}>
-    //           <a href="https://fedger.io/#/"><img src="./logo_light.png" alt="getcontext" width="120px" /></a>
-    //         </div>
-    //         <div className="col visible-xs" style={{width: '7%'}}>
-    //           <a href="https://fedger.io/#/"><img src="./logo_small.png" alt="getcontext" /></a>
-    //         </div>
-    //         <div className="col" style={{padding: '0px'}}>
-    //         {profile}
-    //            </div>
-    //       </div>);
+    var profile = (<DropDownIcon openDirection='bottom-left' onChange={this._onUserClick} className='logoutButton' menuItems={menuList} ><Avatar>{role.charAt(0)}</Avatar></DropDownIcon>
+           );
+    if (this.state.loginStatus.status ) loggedinNav = (
+          <div className="grid headerGrid" >
+            <div className="col" style={{padding: '0px'}}>
+            {profile}
+               </div>
+          </div>);
 
     var advLabel = 'Advanced';
     if (window.location.hash.indexOf('advanced') > -1) advLabel = 'Reset';

@@ -16,7 +16,8 @@ let User = React.createClass({
   getInitialState () {
     return { 
       letterDetails: {},
-      done: false
+      done: false,
+      loginStatus: DataStore.getLogin()
     }
   },
 
@@ -35,6 +36,8 @@ let User = React.createClass({
 
   render() {
 
+    if (this.state.loginStatus.role == 'maintainer') this.context.router.transitionTo('/admin');
+    var returnVar = (<div></div>);
 
       $(document).ready(function() {
         $("body").css("background-color", "#444F5C");
@@ -62,7 +65,7 @@ let User = React.createClass({
       color: '#686868' 
     };
 
-    return (
+    if (this.state.loginStatus.role == 'user') returnVar = (
         <div className="landingWrapper">
           <Snackbar ref="errorAlert" message={errorMessage} style={{top: '16px', backgroundColor: 'darkred'}}autoHideDuration={5000}/>
           <div style={{textAlign: 'center'}}>
@@ -87,6 +90,8 @@ let User = React.createClass({
 
         </div>
       );
+
+      return returnVar;
   },
 
   _handleSubmit(e) {

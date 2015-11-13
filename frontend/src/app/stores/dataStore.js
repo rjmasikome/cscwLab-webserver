@@ -32,11 +32,11 @@ function loadLocation(data) {
 }
 
 function loadUser(data) {
-  if (data.token) {
-    cookie.save('dat_token', data.token);
+  if (data.role) {
+    cookie.save('dat_role', data.role);
     cookie.save('is_loggedin', true);
     _user = {};
-    // console.log("Yaya");
+    // console.log(data);
   }
   else _user = data;
 }
@@ -61,7 +61,9 @@ let ProductStore = _.extend({}, EventEmitter.prototype, {
 
   getLogin: function() {
     var _status = cookie.load('is_loggedin');
-    return _status;
+    var _role = cookie.load('dat_role');
+    var login = { status: _status, role: _role};
+    return login;
   },
 
   getToken: function() {
@@ -70,7 +72,7 @@ let ProductStore = _.extend({}, EventEmitter.prototype, {
   },
 
   logout: function() {
-    cookie.remove('dat_token');
+    cookie.remove('dat_role');
     cookie.remove('is_loggedin');
   },
 
