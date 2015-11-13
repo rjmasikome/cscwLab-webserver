@@ -18,7 +18,8 @@ let Login = React.createClass({
       letterDetails: {},
       loading: 'none',
       done: false,
-      brickType: "two-dot"
+      brickType: "two-dot",
+      loginStatus: DataStore.getLogin()
     }
   },
 
@@ -39,6 +40,10 @@ let Login = React.createClass({
   },
 
   render() {
+
+    if (this.state.loginStatus.role == 'user') this.context.router.transitionTo('/user');
+
+    var returnVar = (<div></div>);
 
 
       $(document).ready(function() {
@@ -89,7 +94,7 @@ let Login = React.createClass({
       width: '25%',
     };
 
-    return (
+    if (this.state.loginStatus.role == 'maintainer') returnVar = (
         <div className="landingWrapper">
           <Snackbar ref="errorAlert" message={errorMessage} style={{top: '16px', backgroundColor: 'darkred'}}autoHideDuration={5000}/>
           <Snackbar ref="addSuccess" message={successMessage} style={{top: '16px'}} autoHideDuration={5000}/>
@@ -118,6 +123,8 @@ let Login = React.createClass({
 
         </div>
       );
+
+  return returnVar; 
   },
 
    _change(e, selectedIndex, menuItem) {
