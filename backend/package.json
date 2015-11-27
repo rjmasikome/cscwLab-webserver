@@ -5,6 +5,7 @@
     "express": "^4.10.6",
     "mysql": "^2.5.4",
     "lodash": "~3.10.1",
-    "body-parser": "~1.14.1"
+    "body-parser": "~1.14.1",
+    "bluetooth-serial-port": "~1.2.6"
   }
 }

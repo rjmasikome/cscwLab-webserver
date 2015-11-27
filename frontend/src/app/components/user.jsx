@@ -32,6 +32,7 @@ let User = React.createClass({
 
   _rerender() {
     this.setState({letterDetails: DataStore.getProduct()});
+    this.refs.errorAlert.show();
   },
 
   render() {
@@ -46,8 +47,11 @@ let User = React.createClass({
       // console.log(this.state.letterDetails);
       var response = this.state.letterDetails;
 
+      // console.log(response);
+
       var errorMessage = "Unspecified Error!";
       if (this.state.inputError) errorMessage = this.state.inputError;
+      if (response.error) errorMessage = response.error;
 
       var image ="";
 

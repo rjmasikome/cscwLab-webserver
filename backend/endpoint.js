@@ -5,7 +5,8 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : 'root',
-  database : 'lego'
+  database : 'lego',
+  multipleStatements: true
 });
 var app = express();
 var bodyParser = require('body-parser')
@@ -31,10 +32,28 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 
 app.get("/letter/:id",function(req,res){
-connection.query("SELECT * from letter WHERE letter = '" + req.params.id + "'", function(err, rows, fields) {
+connection.query("SELECT * from letter WHERE letter = '" + req.params.id + "'; SELECT * from brick", function(err, rows, fields) {
 // connection.end();
-  if (!err)
-    res.send(rows[0]);
+  if (!err){
+      var brick = rows[1][0].amount;
+      var plate = rows[1][1].amount;
+      var cost = rows[0][0].cost;
+      var returnVal = rows[0];
+      if (brick > cost && plate > 0) {
+        var delta = brick - cost;
+        plate = plate - 1;
+        // res.send(rows);
+        connection.query("UPDATE brick set amount = "+ delta +" where id = 1; UPDATE brick set amount = " + plate +" where id = 2" , function(err, rows, fields) {
+        if (!err) {
+          res.send(returnVal);
+        }
+        else res.send(err);});
+        return;
+      }
+      if (brick < cost) res.send({ error: "Brick is not enough"});
+      if (plate <= 0) res.send({ error: "Plate is not enough"});
+
+    }
   else
     throw err;
   });

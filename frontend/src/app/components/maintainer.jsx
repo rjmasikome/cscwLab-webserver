@@ -54,6 +54,7 @@ let Login = React.createClass({
       var table = (<div></div>);
       // var response = this.state.letterDetails;
       var errorMessage = "Unspecified Error...";
+      if (this.state.inputError) errorMessage = this.state.inputError;
       var successMessage ="Test";
 
     if (this.state.brickDetails){
@@ -139,9 +140,16 @@ let Login = React.createClass({
 
   _handleSubmit(e) {
     e.preventDefault();
+
+    var amount = this.refs.amount.getValue();
+    if (isNaN(amount) || parseInt(amount) < 1) {
+      this.setState({inputError: "Please enter POSITIVE NUMBER only..."});
+      this.refs.errorAlert.show();
+      return;
+    }
     var details = {
       "type" : this.state.brickType,
-      "amount" : this.refs.amount.getValue()
+      "amount" : amount
     }
 
     ProductAPI.postBrick(details);
